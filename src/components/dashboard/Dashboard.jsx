@@ -1,12 +1,13 @@
 import Notifications from "./Notifications.jsx";
 import ProjectList from "../projects/ProjectList.jsx";
+import {connect} from "react-redux";
 
-export default function Dashboard() {
+function Dashboard({projects}) {
     return (
         <div className="dashboard container">
             <div className="row">
                 <div className="col s12 m6">
-                    <ProjectList/>
+                    <ProjectList projects={projects}/>
                 </div>
                 <div className="col s12 m5 offset-m1">
                     <Notifications/>
@@ -15,3 +16,11 @@ export default function Dashboard() {
         </div>
     );
 }
+
+function mapStateToProps(state) {
+    return {
+        projects: state.project.projects
+    };
+}
+
+export default connect(mapStateToProps)(Dashboard);

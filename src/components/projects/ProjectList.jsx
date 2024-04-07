@@ -1,10 +1,11 @@
 import ProjectSummary from "./ProjectSummary.jsx";
 
-export default function ProjectList() {
+export default function ProjectList({projects}) {
     return (
         <div className="project-list section">
-            <ProjectSummary/>
-            <ProjectSummary/>
+            {projects && projects.map(project => (
+                <ProjectSummary project={project} key={project.id}/>
+            ))}
         </div>
     );
 }
