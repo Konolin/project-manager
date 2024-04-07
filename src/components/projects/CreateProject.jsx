@@ -1,11 +1,13 @@
 import {useState} from "react";
+import {createProject} from "../../store/actions/projectActions.js";
+import {connect} from "react-redux";
 
-export default function CreateProject() {
+function CreateProject(props) {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
 
     const handleChange = (e) => {
-        if (e.target.id === "password") {
+        if (e.target.id === "title") {
             setTitle(e.target.value);
         } else {
             setContent(e.target.value);
@@ -14,8 +16,7 @@ export default function CreateProject() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("title: " + title);
-        console.log("content: " + content);
+        props.createProject(title, content);
     }
 
     return (
@@ -37,3 +38,11 @@ export default function CreateProject() {
         </div>
     );
 }
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        createProject: (title, content) => dispatch(createProject({title: title, content: content}))
+    }
+}
+
+export default connect(null, mapDispatchToProps)(CreateProject);
