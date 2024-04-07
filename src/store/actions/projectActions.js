@@ -1,4 +1,4 @@
-import {addDoc, collection, getDocs, query} from "firebase/firestore";
+import {addDoc, collection, doc, getDoc, getDocs, query} from "firebase/firestore";
 import db from "../../config/firebaseConfig.js";
 
 export const createProject = (project) => {
@@ -26,9 +26,24 @@ export const fetchProjects = () => {
             return {
                 id: doc.id,
                 ...data,
-                createdAt: data.createdAt.toDate().toISOString() // Convert JavaScript Date to string
+                createdAt: data.createdAt.toDate().toISOString()
             };
         });
         dispatch({type: "FETCH_PROJECTS", projects});
+    };
+};
+
+export const fetchProjectDetails = (projectId) => {
+    return async (dispatch, getState) => {
+        const projectRef = doc(db, "projects", projectId);
+        const projectDoc = await getDoc(projectRef);
+
+        if (projectDoc.exists()) {
+            const project = projectDoc.data();
+            project.createdAt = project.createdAt.toDate().toISOString(); // Convert Firestore Timestamp to JavaScript Date and then to string
+            dispatch({type: "FETCH_PROJECT_DETAILS", project});
+        } else {
+            dispatch({type: "FETCH_PROJECT_DETAILS_ERROR", error: "Project not found"});
+        }
     };
 };

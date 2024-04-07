@@ -7,8 +7,9 @@ const projectReducer = (state = [], action) => {
             console.log("create project error", action.error);
             return state;
         case "FETCH_PROJECTS":
-            console.log("fetched projects", action.projects);
             return { ...state, projects: action.projects };
+        case "FETCH_PROJECT_DETAILS":
+            return { ...state, project: action.project };
         default:
             return state;
     }
