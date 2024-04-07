@@ -1,12 +1,4 @@
-const initState = {
-    projects: [
-        {id: '1', title: 'project 1', content: 'blah '},
-        {id: '2', title: 'project 2', content: 'blah blah'},
-        {id: '3', title: 'project 3', content: 'blah blah blah'}
-    ]
-};
-
-const projectReducer = (state = initState, action) => {
+const projectReducer = (state = [], action) => {
     switch (action.type) {
         case "CREATE_PROJECT":
             console.log("created project", action.project);
@@ -14,6 +6,9 @@ const projectReducer = (state = initState, action) => {
         case "CREATE_PROJECT_ERROR":
             console.log("create project error", action.error);
             return state;
+        case "FETCH_PROJECTS":
+            console.log("fetched projects", action.projects);
+            return { ...state, projects: action.projects };
         default:
             return state;
     }

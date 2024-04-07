@@ -1,8 +1,16 @@
 import Notifications from "./Notifications.jsx";
 import ProjectList from "../projects/ProjectList.jsx";
-import {connect} from "react-redux";
+import {connect, useDispatch} from "react-redux";
+import {useEffect} from "react";
+import {fetchProjects} from "../../store/actions/projectActions.js";
 
 function Dashboard({projects}) {
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(fetchProjects());
+    }, [dispatch]);
+
     return (
         <div className="dashboard container">
             <div className="row">
