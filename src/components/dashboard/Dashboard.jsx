@@ -3,12 +3,12 @@ import ProjectList from "../projects/ProjectList.jsx";
 
 export default function Dashboard() {
     return (
-        <div>
-            <div>
-                <div className="project-list">
+        <div className="dashboard container">
+            <div className="row">
+                <div className="col s12 m6">
                     <ProjectList/>
                 </div>
-                <div className="notifications">
+                <div className="col s12 m5 offset-m1">
                     <Notifications/>
                 </div>
             </div>
