@@ -1,5 +1,5 @@
 import {addDoc, collection, doc, getDoc, getDocs, query} from "firebase/firestore";
-import db from "../../config/firebaseConfig.js";
+import {db} from "../../config/firebaseConfig.js";
 
 export const createProject = (project) => {
     return async (dispatch, getState) => {
