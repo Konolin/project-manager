@@ -1,4 +1,6 @@
 import {useState} from "react";
+import {signInWithEmailAndPassword} from "firebase/auth";
+import {auth} from "../../config/firebaseConfig.js";
 
 export default function SignIn() {
     const [email, setEmail] = useState("");
@@ -14,8 +16,16 @@ export default function SignIn() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("email: " + email);
-        console.log("password: " + password);
+        signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                const user = userCredential.user;
+                console.log(user);
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log(errorCode, errorMessage)
+            });
     }
 
     return (
