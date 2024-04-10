@@ -3,11 +3,13 @@ import {db} from "../../config/firebaseConfig.js";
 
 export const createProject = (project) => {
     return async (dispatch, getState) => {
+        console.log(project);
         addDoc(collection(db, "projects"), {
-            ...project,
-            authorFirstName: "Bob",
-            authorLastName: "Dob",
-            authorId: 12345,
+            title: project.title,
+            content: project.content,
+            authorFirstName: project.user.firstName,
+            authorLastName: project.user.lastName,
+            authorId: project.user.uid,
             createdAt: new Date()
         }).then(() => {
             dispatch({type: "CREATE_PROJECT", project});

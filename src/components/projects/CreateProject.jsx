@@ -1,10 +1,14 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {createProject} from "../../store/actions/projectActions.js";
 import {connect} from "react-redux";
+import {auth, db} from "../../config/firebaseConfig.js";
+import {collection, getDocs, query, where} from "firebase/firestore";
 
 function CreateProject(props) {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
 
     const handleChange = (e) => {
         if (e.target.id === "title") {
@@ -14,9 +18,26 @@ function CreateProject(props) {
         }
     }
 
+    useEffect(() => {
+        const fetchUserData = async () => {
+            const q = query(collection(db, "users"), where("uid", "==", auth.currentUser.uid));
+            const querySnapshot = await getDocs(q);
+            querySnapshot.forEach((doc) => {
+                setFirstName(doc.data().firstName);
+                setLastName(doc.data().lastName);
+            });
+        };
+        fetchUserData();
+    }, []);
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        props.createProject(title, content);
+        const user = {
+            firstName: firstName,
+            lastName: lastName,
+            uid: auth.currentUser.uid
+        }
+        props.createProject(title, content, user);
     }
 
     return (
@@ -41,7 +62,7 @@ function CreateProject(props) {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        createProject: (title, content) => dispatch(createProject({title: title, content: content}))
+        createProject: (title, content, user) => dispatch(createProject({title: title, content: content, user: user}))
     }
 }
 
