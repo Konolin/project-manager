@@ -1,10 +1,12 @@
 import {useState} from "react";
 import {signInWithEmailAndPassword} from "firebase/auth";
 import {auth} from "../../config/firebaseConfig.js";
+import {useNavigate} from "react-router-dom";
 
 export default function SignIn() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         if (e.target.id === "password") {
@@ -26,6 +28,7 @@ export default function SignIn() {
                 const errorMessage = error.message;
                 console.log(errorCode, errorMessage)
             });
+        navigate("/");
     }
 
     return (
