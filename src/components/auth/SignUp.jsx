@@ -1,10 +1,15 @@
 import {useState} from "react";
+import {createUserWithEmailAndPassword} from "firebase/auth";
+import {auth, db} from "../../config/firebaseConfig.js";
+import {addDoc, collection} from "firebase/firestore";
+import {useNavigate} from "react-router-dom";
 
 export default function SignUp() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         if (e.target.id === "password") {
@@ -18,12 +23,24 @@ export default function SignUp() {
         }
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("email: " + email);
-        console.log("password: " + password);
-        console.log("firstName: " + firstName);
-        console.log("latName: " + lastName);
+        await createUserWithEmailAndPassword(auth, email, password)
+            .then(async (userCredential) => {
+                const user = userCredential.user;
+                await addDoc(collection(db, "users"), {
+                    uid: user.uid,
+                    firstName: firstName,
+                    lastName: lastName,
+                    email: email
+                });
+                navigate("/");
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log(errorCode, errorMessage);
+            });
     }
 
     return (
