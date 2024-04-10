@@ -3,12 +3,14 @@ import {createProject} from "../../store/actions/projectActions.js";
 import {connect} from "react-redux";
 import {auth, db} from "../../config/firebaseConfig.js";
 import {collection, getDocs, query, where} from "firebase/firestore";
+import {useNavigate} from "react-router-dom";
 
 function CreateProject(props) {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         if (e.target.id === "title") {
@@ -38,6 +40,7 @@ function CreateProject(props) {
             uid: auth.currentUser.uid
         }
         props.createProject(title, content, user);
+        navigate("/");
     }
 
     return (

@@ -2,6 +2,7 @@ import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchProjectDetails} from "../../store/actions/projectActions.js";
+import moment from "moment";
 
 export default function ProjectDetails() {
     const {id} = useParams();
@@ -25,9 +26,8 @@ export default function ProjectDetails() {
                     <p>{project.content}</p>
                 </div>
                 <div className="card-action grey lighten-4 grey-text">
-                    <div>{project.authorLastName} {project.authorFirstName}</div>
-                    {/*TODO: format date*/}
-                    <div>{project.createdAt}</div>
+                    <div>Created by: {project.authorLastName} {project.authorFirstName}</div>
+                    <div>{moment(project.createdAt).calendar()}</div>
                 </div>
             </div>
         </div>
