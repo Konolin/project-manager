@@ -25,12 +25,11 @@ export default function SignedInLinks() {
     const handleSignOut = () => {
         signOut(auth)
             .then(() => {
-                console.log('User signed out');
+                navigate("/signin");
             })
             .catch((error) => {
                 console.error('Error signing out: ', error);
             });
-        navigate("/signin");
     };
 
     return (
