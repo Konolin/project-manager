@@ -1,5 +1,5 @@
 import {useParams} from "react-router-dom";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchProjectDetails} from "../../store/actions/projectActions.js";
 
@@ -7,10 +7,15 @@ export default function ProjectDetails() {
     const {id} = useParams();
     const dispatch = useDispatch();
     const project = useSelector(state => state.project.project);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        dispatch(fetchProjectDetails(id));
+        dispatch(fetchProjectDetails(id)).then(() => setIsLoading(false));
     }, [dispatch, id]);
+
+    if (isLoading) {
+        return null;
+    }
 
     return (
         <div className="container section project-details">
